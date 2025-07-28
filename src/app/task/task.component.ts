@@ -16,6 +16,7 @@ export class TaskComponent implements OnInit {
   tasks: Task[] = [];
   taskForm: FormGroup;
   isEdit = false;
+  isLoading = false; // Nouvelle propriété pour le loading
 
   constructor(private taskService: TaskService, private fb: FormBuilder) {
     this.taskForm = this.fb.group({
@@ -33,28 +34,37 @@ export class TaskComponent implements OnInit {
 
   loadTasks() {
     console.log('Chargement des tâches...');
+    this.isLoading = true; // Activation du loading
     this.taskService.getAll().subscribe({
       next: data => {
         console.log('Tâches reçues:', data);
         this.tasks = data;
+        this.isLoading = false; // Désactivation du loading
       },
-      error: err => console.error('Erreur lors du chargement:', err)
+      error: err => {
+        console.error('Erreur lors du chargement:', err);
+        this.isLoading = false; // Désactivation du loading en cas d'erreur
+      }
     });
   }
 
   save() {
+    this.isLoading = true; // Activation du loading
     const task = this.taskForm.value;
-    if (this.isEdit && task.id) {
-      this.taskService.update(task).subscribe(() => {
+    const saveObservable = this.isEdit && task.id
+      ? this.taskService.update(task)
+      : this.taskService.save(task);
+
+    saveObservable.subscribe({
+      next: () => {
         this.loadTasks();
         this.resetForm();
-      });
-    } else {
-      this.taskService.save(task).subscribe(() => {
-        this.loadTasks();
-        this.resetForm();
-      });
-    }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la sauvegarde:', err);
+        this.isLoading = false;
+      }
+    });
   }
 
   edit(task: Task) {
@@ -64,7 +74,14 @@ export class TaskComponent implements OnInit {
 
   delete(id: number) {
     if (confirm("Voulez-vous vraiment supprimer cette tâche ?")) {
-      this.taskService.delete(id).subscribe(() => this.loadTasks());
+      this.isLoading = true; // Activation du loading
+      this.taskService.delete(id).subscribe({
+        next: () => this.loadTasks(),
+        error: (err) => {
+          console.error('Erreur lors de la suppression:', err);
+          this.isLoading = false;
+        }
+      });
     }
   }
 
