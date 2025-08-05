@@ -1,0 +1,22 @@
+<header class="header">
+  <div class="container">
+    <h1 class="logo">
+      <a routerLink="/home" routerLinkActive="active">
+         <img ngSrc="assets/img/logo.png" alt="Logo" height="80" width="120">
+      </a>
+    </h1>
+    <nav class="nav">
+      <a routerLink="/tasks" routerLinkActive="active">Tâches</a>
+
+      <ng-container *ngIf="isAuthenticated; else guestLinks">
+        <a routerLink="/profil" routerLinkActive="active">Profil</a>
+        <a (click)="logout()" class="logout-link">Déconnexion</a>
+      </ng-container>
+
+      <ng-template #guestLinks>
+        <a routerLink="/login" routerLinkActive="active">Connexion</a>
+        <a routerLink="/register" routerLinkActive="active">Inscription</a>
+      </ng-template>
+    </nav>
+  </div>
+</header>

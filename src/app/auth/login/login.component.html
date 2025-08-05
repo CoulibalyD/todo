@@ -1,0 +1,13 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Connexion</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <input formControlName="username" type="text" placeholder="Nom d'utilisateur" />
+      <input formControlName="password" type="password" placeholder="Mot de passe" />
+      <button type="submit" [disabled]="form.invalid">Se connecter</button>
+      <p class="redirect">
+        Vous n'avez pas encore de compte ? <a routerLink="/register">Créer un compte</a>
+      </p>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+
+
+<div class="task-container">
+
+  <h2>{{ editingTaskId ? 'Modifier une tâche' : 'Créer une nouvelle tâche' }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="task-form">
+    <div class="form-group">
+      <label for="title">Titre</label>
+      <input id="title" type="text" formControlName="title" placeholder="Titre de la tâche" />
+      <div class="error" *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
+        Le titre est requis
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description" placeholder="Description (optionnelle)"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="dueDate">Date d'échéance</label>
+      <input id="dueDate" type="datetime-local" formControlName="dueDate" />
+    </div>
+
+    <div class="form-group">
+      <label for="priority">Priorité</label>
+      <select id="priority" formControlName="priority">
+        <option value="" disabled>Choisissez une priorité</option>
+        <option value="LOW">Faible</option>
+        <option value="MEDIUM">Moyenne</option>
+        <option value="HIGH">Haute</option>
+      </select>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || loading" class="btn-submit">
+      {{ loading ? (editingTaskId ? 'Mise à jour...' : 'Création...') : (editingTaskId ? 'Mettre à jour' : 'Créer') }}
+    </button>
+    <button type="button" class="btn-cancel" *ngIf="editingTaskId" (click)="resetForm()" [disabled]="loading">
+      Annuler
+    </button>
+  </form>
+
+  <hr />
+
+  <h3>Liste des tâches</h3>
+
+  <div *ngIf="loading" class="loading-indicator">Chargement...</div>
+
+  <ul class="task-list" *ngIf="tasks.length > 0; else noTasks">
+    <li *ngFor="let task of tasks" [class.done]="task.status === 'DONE'">
+      <div class="task-item">
+        <div>
+          <strong>{{ task.title }}</strong>
+          <span class="priority" [ngClass]="task.priority.toLowerCase()">
+            {{ task.priority }}
+          </span>
+          <br />
+          <small *ngIf="task.dueDate">Échéance: {{ task.dueDate | date:'short' }}</small>
+          <p *ngIf="task.description">{{ task.description }}</p>
+        </div>
+        <div class="actions">
+          <button (click)="edit(task)" class="btn-edit" title="Modifier">✏️</button>
+          <button (click)="deleteTask(task.id!)" class="btn-delete" title="Supprimer">🗑️</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="task-container">
+    <div *ngIf="loading" class="loading">Chargement des tâches...</div>
+
+    <div *ngIf="!loading && tasks.length === 0" class="no-tasks">
+      Aucune tâche trouvée.
+    </div>
+
+  </div>
+
+
+  <ng-template #noTasks>
+    <p>Aucune tâche disponible.</p>
+  </ng-template>
+
+</div>
