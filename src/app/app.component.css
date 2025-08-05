@@ -1,5 +1,5 @@
 .main-content {
   min-height: calc(100vh - 120px);
   padding: 1rem;
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #e3f2fd, #f4c595);
 }
