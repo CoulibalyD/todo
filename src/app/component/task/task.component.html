@@ -56,7 +56,7 @@
             {{ task.priority }}
           </span>
           <br />
-          <small *ngIf="task.dueDate">Échéance: {{ task.dueDate | date:'short' }}</small>
+          <small *ngIf="task.dueDate">Échéance: {{ task.dueDate| date:'short' }}</small>
           <p *ngIf="task.description">{{ task.description }}</p>
         </div>
         <div class="actions">

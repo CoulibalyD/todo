@@ -8,10 +8,13 @@
     <div class="hamburger" (click)="toggleMenu()">
       <span></span>
       <span></span>
-      <span></span>
+<!--      <span></span>-->
     </div>
     <nav class="nav" [ngClass]="{'active': isMenuOpen}">
       <ng-container *ngIf="isAuthenticated; else guestLinks">
+        <div class="user-info">
+          <span>{{ username }} <small>( USER )</small></span>
+        </div>
         <a routerLink="/tasks" routerLinkActive="active" (click)="closeMenu()">Tâches</a>
         <a routerLink="/profil" routerLinkActive="active" (click)="closeMenu()">Profil</a>
         <a (click)="logout()" class="logout-link">Déconnexion</a>

@@ -11,10 +11,13 @@ import { AuthService } from '../auth.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
+
 export class RegisterComponent implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+
+  showPassword = false;
 
   form!: FormGroup;
 
@@ -32,6 +35,10 @@ export class RegisterComponent implements OnInit {
       next: () => this.router.navigate(['/login']),
       error: () => alert('Registration failed')
     });
+  }
+
+  toggleShowPassword(): void {
+    this.showPassword = !this.showPassword;
   }
 }
 

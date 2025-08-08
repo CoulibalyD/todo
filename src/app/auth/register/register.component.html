@@ -4,7 +4,20 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <input formControlName="username" type="text" placeholder="Nom d'utilisateur" />
       <input formControlName="email" type="email" placeholder="Adresse email" />
-      <input formControlName="password" type="password" placeholder="Mot de passe" />
+      <div class="password-container">
+        <input
+          formControlName="password"
+          [type]="showPassword ? 'text' : 'password'"
+          placeholder="Mot de passe"
+        />
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="toggleShowPassword()"
+        >
+          {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+        </button>
+      </div>
       <button type="submit" [disabled]="form.invalid">S'inscrire</button>
       <p class="redirect">
         Vous avez déjà un compte ? <a routerLink="/login">Connectez-vous</a>

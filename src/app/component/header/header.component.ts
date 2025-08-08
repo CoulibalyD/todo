@@ -16,11 +16,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isMenuOpen = false;
   private authSub!: Subscription;
 
+  username: string | null = null;
+  role: string | null = null;
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authSub = this.authService.authStatus$.subscribe(status => {
       this.isAuthenticated = status;
+
+      if(status){
+        const user =  this.authService.getUserFromToken();
+        this.username = user?.sub ?? null
+        this.role = user.role?.role ?? null;
+      } else {
+        this.username = null;
+        this.role = null;
+      }
     });
   }
 

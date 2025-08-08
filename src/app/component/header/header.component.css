@@ -25,6 +25,17 @@
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
+.user-info {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+  margin-right: 1rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+
 .logo img:hover {
   transform: scale(1.05) rotate(2deg);
   filter: brightness(1.1);
